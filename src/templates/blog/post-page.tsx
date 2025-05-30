@@ -6,35 +6,21 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Avatar } from "@/components/avatar";
-import { allPosts } from "contentlayer/generated";
+import { Post } from "contentlayer/generated";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { Markdown } from "@/components/markdown";
 import { Button } from "@/components/ui/button";
 import { useShare } from "@/hooks";
 
-export const PostPage = () => {
-  const router = useRouter();
-  const slug = router.query.slug as string;
+export type PostPageProps = {
+  post: Post;
+};
 
-  const post = slug
-    ? allPosts.find(
-        (post) => post.slug.toLowerCase() === slug.toString().toLowerCase()
-      )
-    : undefined;
-
-  if (!slug || !post) {
-    return (
-      <p className="text-center text-gray-300">
-        Post não encontrado ou carregando...
-      </p>
-    );
-  }
-
+export const PostPage = ({ post }: PostPageProps) => {
   const publishedDate = new Date(post?.date).toLocaleDateString("pt-BR");
 
-  const postUrl = `https://site.set/blog/${slug}`;
+  const postUrl = `https://site.set/blog/${post.slug}`;
 
   const { shareButtons } = useShare({
     url: postUrl,
@@ -43,7 +29,7 @@ export const PostPage = () => {
   });
 
   return (
-    <main className="py-20 md:py-32 text-gray-100">
+    <main className="text-gray-100">
       <div className="container space-y-8 px-4 md:px-8 mb-20 md:mb-32">
         <Breadcrumb>
           <BreadcrumbList>
@@ -74,7 +60,7 @@ export const PostPage = () => {
               />
             </figure>
 
-            <header className="p-4 md:p-6 lg:p-12 pb-0">
+            <header className="p-4 md:p-6 lg:p-12">
               <h1 className="mb-8 text-balance text-heading-lg md:text-heading-xl lg:text-heading-xl">
                 {post?.title}
               </h1>
@@ -106,7 +92,7 @@ export const PostPage = () => {
                 Compartilhar
               </h2>
 
-              <div className="flex justify-start md:flex-col gap-2">
+              <div className="flex justify-start  md:flex-col gap-2">
                 {shareButtons.map((provider) => (
                   <Button
                     key={provider.provider}
