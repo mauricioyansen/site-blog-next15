@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { Header } from "./header";
 import { Footer } from "./footer";
+import { CTA } from "@/templates/landing-page/sections";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <main className="flex-1 flex flex-col pt-10 md:pt-0 lg:pt-0">
         {children}
       </main>
+      <CTA />
       <Footer />
     </div>
   );
